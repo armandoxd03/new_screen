@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import Search from '../Search';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const TEAM_COUNT = 4;
+const USER_COUNT = 8;
 const MyConnections = () => {
    return (
       <View style={styles.card}>
@@ -12,7 +12,10 @@ const MyConnections = () => {
               <Search/>
             </View>
   
-            <View style={styles.cardHeader}>
+              <ScrollView  style={styles.scroll} showsVerticalScrollIndicator={false}>
+                  {Array.from({ length: USER_COUNT }).map((_, index) => (
+                        <View key={index} style={{ marginBottom: 10 }}>
+                               <View style={styles.cardHeader}>
               <View style={styles.avatarBadge}>
                 <Text style={styles.avatarText}>JR</Text>
               </View>
@@ -26,7 +29,11 @@ const MyConnections = () => {
                       <Text style={styles.cardSubtitle}>Message</Text>
                     </TouchableOpacity>
                   </View>
-              </View>
+              </View>  
+                        </View>
+                          ))}
+                  </ScrollView>
+
               <View>
                 <TouchableOpacity style={[styles.messageBtn, styles.outlineBtn]} onPress={() => {}} >
                   <Text style={styles.cardSubtitle}>Add Project</Text>
@@ -134,4 +141,9 @@ const MyConnections = () => {
       alignItems: 'flex-end',
       justifyContent: 'center',
     },
+
+      scroll: {
+  maxHeight: 470,
+  marginBottom: 10,
+  },
   })
