@@ -1,69 +1,91 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 
-export default function TeamCard() {
+interface TeamData {
+  initials: string
+  name: string
+  specialty: string
+  technologies: string[]
+  matchScore: number
+}
+
+interface TeamCardProps {
+  teamData: TeamData
+}
+
+export default function TeamCard({ teamData }: TeamCardProps) {
+  const team = teamData
+
+  const handleRequestTeam = () => {
+    Alert.alert(
+      'Request Sent',
+      `Your request to ${team.name} has been sent successfully!`,
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('Request sent for ' + team.name),
+          style: 'default',
+        },
+      ]
+    )
+  }
+
   return (
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <View style={styles.avatarBadge}>
-                <Text style={styles.avatarText}>JD</Text>
-              </View>
+    <View style={styles.card}>
+      <View style={styles.cardHeader}>
+        <View style={styles.avatarBadge}>
+          <Text style={styles.avatarText}>{team.initials}</Text>
+        </View>
 
-              <View style={{ flex: 1 }}>
-                <Text style={styles.cardTitle}>MERN Stack Devs</Text>
-                <Text style={styles.cardSubtitle}>Mobile Development</Text>
-              </View>
-            </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.cardTitle}>{team.name}</Text>
+          <Text style={styles.cardSubtitle}>{team.specialty}</Text>
+        </View>
+      </View>
 
-            {/* Tech */}
-            <View style={styles.techRow}>
-              <View style={styles.techPill}>
-                <Text style={styles.techText}>React</Text>
-              </View>
-
-              <View style={styles.techPill}>
-                <Text style={styles.techText}>Node.js</Text>
-              </View>
-
-              <View style={styles.techPill}>
-                <Text style={styles.techText}>MongoDB</Text>
-              </View>
-            </View>
-
-            {/* Match Score (moved into MERN card) */}
-            <View style={styles.matchRow}>
-              <Text style={styles.matchLabel}>Match Score</Text>
-              <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: '80%' }]} />
-              </View>
-            </View>
-
-            {/* Actions */}
-            <View style={styles.cardActions}>
-              <TouchableOpacity
-                style={[styles.actionBtn, styles.outlineBtn]}
-              >
-                <Text style={[styles.actionText, styles.outlineText]}>
-                  Request Team
-                </Text>
-              </TouchableOpacity>
-            </View>
+      {/* Tech */}
+      <View style={styles.techRow}>
+        {team.technologies.map((tech, index) => (
+          <View key={index} style={styles.techPill}>
+            <Text style={styles.techText}>{tech}</Text>
           </View>
+        ))}
+      </View>
+
+      {/* Match Score */}
+      <View style={styles.matchRow}>
+        <Text style={styles.matchLabel}>Match Score</Text>
+        <View style={styles.progressBar}>
+          <View style={[styles.progressFill, { width: `${team.matchScore}%` }]} />
+        </View>
+      </View>
+
+      {/* Actions */}
+      <View style={styles.cardActions}>
+        <TouchableOpacity 
+          style={[styles.actionBtn, styles.solidBtn]}
+          onPress={handleRequestTeam}
+        >
+          <Text style={styles.actionText}>
+            Request Team
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-
   actionBtn: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 10,
   },
 
   actionText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: 13,
+    fontSize: 15,
   },
 
   avatarBadge: {
@@ -81,8 +103,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 18,
   },
+
   card: {
-    backgroundColor: 'rgba(15,20,28,0.6)',
+    backgroundColor: 'rgba(31, 122, 239, 0.1)',
     borderRadius: 14,
     padding: 16,
     marginBottom: 16,
@@ -94,17 +117,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  
-
   cardTitle: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '700',
   },
 
   cardSubtitle: {
     color: '#9aa6b9',
-    fontSize: 12,
+    fontSize: 13,
   },
 
   techRow: {
@@ -132,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
 
-   matchRow: {
+  matchRow: {
     marginTop: 10,
   },
 
@@ -142,15 +163,20 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-    outlineBtn: {
+  solidBtn: {
+    backgroundColor: '#1f7aef',
+  },
+
+  outlineBtn: {
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
   },
 
-    outlineText: {
+  outlineText: {
     color: '#cfe3ff',
   },
-progressBar: {
+
+  progressBar: {
     height: 8,
     backgroundColor: 'rgba(255,255,255,0.06)',
     borderRadius: 6,
@@ -162,7 +188,4 @@ progressBar: {
     backgroundColor: '#f6a623',
     borderRadius: 6,
   },
-
-
 })
-
